@@ -1,0 +1,20 @@
+{
+  "name": "@pedroavj/google-cloud",
+  "version": "0.2.9",
+  "private": true,
+  "type": "module",
+  "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
+  "scripts": {
+    "check": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PedroAVJ/google-cloud.git"
+  },
+  "homepage": "https://github.com/PedroAVJ/google-cloud#readme",
+  "bugs": {
+    "url": "https://github.com/PedroAVJ/google-cloud/issues"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "google-cloud",
+  "version": "0.2.9",
+  "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
+  "author": {
+    "name": "PedroAVJ",
+    "url": "https://github.com/PedroAVJ"
+  },
+  "homepage": "https://github.com/PedroAVJ/google-cloud",
+  "repository": "https://github.com/PedroAVJ/google-cloud",
+  "license": "MIT",
+  "keywords": [
+    "google-cloud",
+    "gcp",
+    "gcloud",
+    "cloud-storage",
+    "gcs",
+    "publishing"
+  ],
+  "skills": "./skills/"
+}
