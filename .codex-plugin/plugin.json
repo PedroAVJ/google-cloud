@@ -1,6 +1,6 @@
 {
   "name": "google-cloud",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
   "author": {
     "name": "PedroAVJ",
@@ -23,7 +23,7 @@
     "shortDescription": "gcloud, Cloud Storage, and artifact publishing",
     "longDescription": "Reach Google Cloud through the gcloud CLI rather than a curated connector: discover projects, operate Cloud Storage within its write boundaries, and publish artifacts with native gcloud commands.",
     "developerName": "PedroAVJ",
-    "category": "Cloud",
+    "category": "Developer Tools",
     "capabilities": [
       "Interactive",
       "Read",
