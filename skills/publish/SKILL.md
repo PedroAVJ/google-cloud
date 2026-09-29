@@ -13,7 +13,7 @@ bucket every time rather than relying on ambient defaults.
 | Consumer | Destination |
 | --- | --- |
 | Anonymous renderer such as a Markdown image, Notion image block, or web page | A deliberately public Cloud Storage bucket |
-| A person opening or downloading a private/shared file | Google Drive through the `google-drive` plugin |
+| A person opening or downloading a private/shared file | Google Drive through the connected Google Drive connector or the `gws` CLI |
 
 Never put personal, client-confidential, or private material in a public bucket.
 When the correct access posture is unclear, ask before uploading.

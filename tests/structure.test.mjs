@@ -7,7 +7,7 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const expected = {
   "name": "google-cloud",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "url": "https://github.com/PedroAVJ/google-cloud",
   "dependencies": []
 };
