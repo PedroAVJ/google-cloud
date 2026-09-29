@@ -28,6 +28,7 @@ callable, so it wins.
 | Skill | Use it when |
 | --- | --- |
 | `google-cloud` | Any GCP task: which project a thing lives in, auth, scoping commands, provisioning, and the safety boundary around production resources. |
+| `workspace` | Google Drive files and Google Calendar events through authenticated `gws`. |
 | `storage` | Which bucket holds what, the repo-scoped prefix convention, and how to identify read-only backup and application buckets. |
 | `publish` | Turning a local file into a durable URL with native `gcloud storage` commands, including deciding whether it belongs in Cloud Storage or Google Drive at all. |
 | `gmail` | Gmail through `gws`: search, thread summaries, drafting, forwarding, labels, self-delivery, pasted links. |

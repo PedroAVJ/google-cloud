@@ -10,7 +10,7 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const expected = {
   "name": "google-cloud",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "url": "https://github.com/PedroAVJ/google-cloud",
   "dependencies": [
     "toolchain@package-manager"
@@ -91,6 +91,7 @@ test("merged Gmail and YouTube surfaces are present", async () => {
     "google-cloud",
     "publish",
     "storage",
+    "workspace",
     "youtube",
   ]);
   for (const skill of skills) {
