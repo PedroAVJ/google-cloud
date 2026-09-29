@@ -10,11 +10,9 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const expected = {
   "name": "google-cloud",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "url": "https://github.com/PedroAVJ/google-cloud",
-  "dependencies": [
-    "toolchain@package-manager"
-  ]
+  "dependencies": []
 };
 
 async function json(...parts) {
@@ -57,6 +55,7 @@ test("standalone plugin metadata is synchronized", async () => {
     assert.equal(claude.version, codex.version);
     assert.equal(claude.homepage, expected.url);
     assert.equal(claude.repository, expected.url);
+    assert.deepEqual(claude.dependencies ?? [], expected.dependencies);
     for (const dependency of expected.dependencies) {
       assert.ok((claude.dependencies ?? []).includes(dependency));
     }
