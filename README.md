@@ -2,7 +2,7 @@
 
 Google through its command-line interfaces: Google Cloud through `gcloud`,
 Google Workspace (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People) through
-the Google Workspace CLI `gws`, OpenAI's connected Gmail workflows, and YouTube
+the Google Workspace CLI `gws`, Gmail workflows, and YouTube
 through the plugin-owned `ytx` CLI.
 
 This plugin absorbed the former `gmail` and `youtube` plugins. Their skills,
@@ -30,19 +30,20 @@ callable, so it wins.
 | `google-cloud` | Any GCP task: which project a thing lives in, auth, scoping commands, provisioning, and the safety boundary around production resources. |
 | `storage` | Which bucket holds what, the repo-scoped prefix convention, and how to identify read-only backup and application buckets. |
 | `publish` | Turning a local file into a durable URL with native `gcloud storage` commands, including deciding whether it belongs in Cloud Storage or Google Drive at all. |
-| `gmail` | OpenAI's connected Gmail workflow: search, thread summaries, drafting, forwarding, labels, self-delivery, pasted links. |
+| `gmail` | Gmail through `gws`: search, thread summaries, drafting, forwarding, labels, self-delivery, pasted links. |
 | `gmail-inbox-triage` | OpenAI's inbox triage into urgent, needs reply soon, waiting, and FYI. |
-| `gmail-cli` | Raw Gmail API metadata, MIME source, and attachments through `gws` when the connector is not raw enough. |
+| `gmail-cli` | Gmail API metadata, MIME source, attachments, and compose/label operations through `gws`. |
 | `gmail-review-attention` | Stateless, received-time-bounded review of consequential inbound Gmail. |
 | `gmail-review-inbox-hygiene` | Read-only unwanted-message review with manual unsubscribe, block, or report suggestions. |
 | `youtube` | Playlists, liked videos, subscriptions, and quota through `ytx` over the YouTube Data API v3. |
 
 ## Gmail
 
-ChatGPT and Codex use `.app.json` for OpenAI's canonical Gmail connector.
-Claude Code does not consume ChatGPT app registrations, so it uses the `gws`
-path. The raw fallback requires `gws` to be installed and authenticated with
-the Gmail API enabled for its OAuth project.
+Codex and Claude Code use the authenticated Google Workspace CLI `gws` for
+all Gmail operations. The optional curated Gmail plugin is not required, and
+this plugin registers no Gmail app connector. Keep `gws` authenticated with the
+Gmail API enabled for its OAuth project. Draft text stays in the conversation
+unless the user asks to save a Gmail draft; sending requires send authorization.
 
 ```bash
 gws auth status

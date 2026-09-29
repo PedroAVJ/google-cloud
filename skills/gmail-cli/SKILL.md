@@ -1,16 +1,12 @@
 ---
 name: gmail-cli
-description: Use Gmail through the authenticated Google Workspace CLI. Use when the bundled Gmail connector cannot expose raw message payloads, binary attachments, unsupported MIME types, original MIME source, or exact Gmail API metadata.
+description: Use Gmail through the authenticated Google Workspace CLI. Use for Gmail search, messages, threads, drafts, sends, labels, raw MIME, and binary attachments in either Codex or Claude Code.
 ---
 
 # Gmail (CLI)
 
-Use this plugin when Gmail access needs the raw Google Workspace CLI path, especially for binary attachments, unsupported MIME types, raw message payloads, label IDs, original MIME source, or exact API metadata that the bundled Gmail connector cannot return.
-
-This plugin is a derivative of OpenAI's Gmail connector plugin and packages the
-same canonical Gmail app registration. Prefer the bundled connector for normal
-mailbox search, thread summaries, drafts, sends, archive/delete actions, and
-user-friendly inbox triage. Use the installed `gws` CLI as the precise fallback.
+Use `gws` for every Gmail operation. Workflow guidance lives in
+[../gmail/SKILL.md](../gmail/SKILL.md); no Gmail connector is required.
 
 ## Start
 
@@ -113,7 +109,7 @@ Decode the returned `raw` field as base64url if you need to inspect the original
 
 ## Labels And Mutations
 
-Prefer the bundled Gmail connector for user-facing archive/delete/label/draft/send actions. If a raw CLI mutation is necessary, read the target message first and use a dry-run-style preview in your explanation before applying changes.
+Use `gws` after verifying the target and the user's authorization. Read before mutation; `--dry-run` validates the request locally without contacting the mutation endpoint. See [compose and mutations](references/compose-and-mutations.md) for MIME, reply threading, drafts, sending, and label operations.
 
 Common read commands:
 
@@ -124,20 +120,20 @@ gws gmail users messages get --params '{"userId":"me","id":"MESSAGE_ID","format"
 
 ## Raw API Help
 
-Use schema discovery before unfamiliar fields or methods:
+Use schema discovery before unfamiliar fields or methods. Avoid `--resolve-refs` for recursive Gmail Message/Draft schemas; affected gws versions can overflow the stack:
 
 ```bash
-gws schema gmail.users.messages.list --resolve-refs
-gws schema gmail.users.messages.get --resolve-refs
-gws schema gmail.users.messages.attachments.get --resolve-refs
-gws schema gmail.users.labels.list --resolve-refs
+gws schema gmail.users.messages.list
+gws schema gmail.users.messages.get
+gws schema gmail.users.messages.attachments.get
+gws schema gmail.users.labels.list
 ```
 
 ## Rules
 
 - Prefer message IDs over subjects; subjects and sender names are not unique.
 - Prefer metadata-only discovery before reading bodies or full payloads.
-- Use the bundled Gmail connector first for normal search/read/thread/draft workflows; use `gws` when raw payload or binary attachment handling matters.
+- Use `gws` for normal search/read/thread/draft workflows and raw payloads alike.
 - Read before archive, delete, label, send, or draft mutations. Ask before destructive mailbox changes unless the user already explicitly approved the exact action.
 - Keep downloaded email artifacts in the current workspace or a clearly named temporary folder, and verify file type/size after download.
 - Treat raw attachments, contracts, bank docs, IDs, and policy documents as private. Do not paste sensitive numbers into generated public docs or messages unless the user explicitly asks.

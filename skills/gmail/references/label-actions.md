@@ -1,26 +1,16 @@
 # Label Actions
 
-Read this file when the user wants to apply labels, relabel matching mail, or do mailbox cleanup that depends on labels.
+Use `gws gmail users labels list` to resolve names to IDs. Search with `messages
+list` and a precise `q`, inspect the intended set, then pass explicit IDs to
+`messages modify` or `messages batchModify`. See the
+[mutation reference](../../gmail-cli/references/compose-and-mutations.md).
 
-## Tool Shapes
-
-- `apply_labels_to_emails` expects:
-  - `message_ids: list[str]`
-  - `add_label_names: list[str]`
-  - `remove_label_names: list[str]`
-  - `create_missing_labels: bool`
-- Even one label name must be wrapped in a list, for example `add_label_names: ["Google Docs"]`.
-
-## Choosing the Label Tool
-
-- Prefer `bulk_label_matching_emails` when the task can be expressed as a clear Gmail query and the user wants to label all matching mail.
-- Prefer `apply_labels_to_emails` when you already inspected results and selected a specific shortlist of message IDs.
-- Prefer Gmail search refinement before labeling. Tighten the query first rather than labeling a noisy result set and cleaning it up later.
-
-## Labeling Pattern
-
-1. Build or refine a Gmail query that matches the intended set.
-2. Inspect a small sample if the classification is heuristic or ambiguous.
-3. Use `bulk_label_matching_emails` for broad backfills driven by query logic.
-4. Use `apply_labels_to_emails` for hand-picked message lists, and always pass label names as arrays.
-5. Keep label changes separate from analysis in the response, and make it clear what was labeled and why.
+- Gmail API uses `addLabelIds` and `removeLabelIds` arrays, not label names.
+- Create a missing label with `users labels create` only when authorized.
+- For query-wide changes, enumerate all pages before applying changes so that
+  the mutations do not change the search under pagination. State the scope and
+  coverage; do not report a partial enumeration as all matching mail.
+- Batch modifications accept at most 1,000 message IDs per request.
+- Archive removes `INBOX`; trash uses `messages trash`. Permanent deletion is a
+  separate destructive operation, never a substitute for archive or trash.
+- Verify changed labels afterward. Separate applied changes from suggestions.

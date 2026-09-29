@@ -8,8 +8,8 @@
       "files": [],
       "expectations": [
         "Extracts 18f7abc123 without passing the full URL to a Gmail tool",
-        "Calls read_email_thread with the token as a message ID first",
-        "Retries once with id_type=thread only if the message-ID lookup is invalid or not found",
+        "Calls gws gmail users messages get with the token as id first",
+        "Retries once with gws gmail users threads get only if the message-ID lookup is invalid or not found",
         "Does not use broad Gmail search or guessed metadata"
       ]
     },
@@ -20,7 +20,7 @@
       "files": [],
       "expectations": [
         "Extracts 18f7def456 and excludes ?attachment_id=att-9 from the ID",
-        "Uses the connected Gmail account rather than interpreting the URL as account selection",
+        "Uses the authenticated gws Gmail account rather than interpreting the URL as account selection",
         "Uses at most the message-ID attempt and one thread-ID fallback",
         "Does not claim arbitrary Gmail URLs are reliably supported"
       ]
@@ -45,7 +45,7 @@
       "expectations": [
         "Stops after the message-ID and thread-ID lookups fail",
         "Does not search the mailbox or retry repeatedly despite the user's request",
-        "Explains that /u/1 is a browser account slot and does not select a connector account",
+        "Explains that /u/1 is a browser account slot and does not select a gws account",
         "Asks the user to connect the mailbox containing the message or provide fetchable identifying information"
       ]
     }

@@ -7,7 +7,7 @@ Read this file when the user wants to reply to an email, draft a response, decid
 - Read the most recent thread items before drafting. At a minimum, inspect the latest message and enough recent context to understand who is asking for what, whether the thread already moved forward, and what tone the participants are using.
 - Match the thread's tone unless the user asks for a deliberate change. Pay attention to formality, brevity, warmth, directness, and how participants greet or sign off.
 - If the user asks to reply but not explicitly to send, default to a draft.
-- Gmail compose is not plain-text only. The body input is treated as Markdown/plain text and the send path includes both plain text and generated HTML. Do not claim that the connector only supports plain-text emails, but also do not assume it supports arbitrary custom HTML authoring.
+- Draft text in the conversation by default. Save to Gmail only when requested. For saved drafts or authorized sends, use the [gws compose reference](../../gmail-cli/references/compose-and-mutations.md): RFC MIME with optional explicit HTML, base64url encoding, and correct reply headers. `gws` does not automatically render Markdown into HTML.
 
 ## Reply-All Etiquette
 
@@ -21,7 +21,7 @@ Read this file when the user wants to reply to an email, draft a response, decid
 
 1. Inspect the most recent message first.
 2. Read at least enough recent context to understand the latest ask, current status, open questions, and participants.
-3. Escalate to `read_email_thread` when earlier back-and-forth changes the answer, recipient choice, or tone.
+3. Escalate to `gws gmail users threads get` when earlier back-and-forth changes the answer, recipient choice, or tone.
 4. Preserve concrete facts from the thread such as dates, commitments, links, and names unless the user asks to change them.
 
 ## Drafting Pattern

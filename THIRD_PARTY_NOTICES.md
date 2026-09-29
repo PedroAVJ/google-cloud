@@ -22,7 +22,7 @@ MIT license text corresponding to the declaration is retained in
 `licenses/openai-gmail-MIT.txt`; it is not represented as a copied upstream
 LICENSE file. Preserve OpenAI attribution when updating this component.
 
-OpenAI-authored app registration, vendor skills, references, evaluation cases,
+OpenAI-derived skills, references, evaluation cases,
 and accompanying assets retain their upstream provenance. Downstream workflows,
 helpers, tests, and metadata are maintained by PedroAVJ and use the first-party
 MIT license in `LICENSE`.
@@ -30,5 +30,6 @@ MIT license in `LICENSE`.
 ## Gmail service marks
 
 Google and Gmail names and logos belong to their respective owner. The software
-license does not relicense trademarks or imply endorsement. Provider connector
-identifiers remain unchanged for compatibility.
+license does not relicense trademarks or imply endorsement. The former Gmail
+app registration was removed in 0.3.1; Gmail operations use
+`gws` without registering an OpenAI connector.

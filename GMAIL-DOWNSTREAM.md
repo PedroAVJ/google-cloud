@@ -20,3 +20,12 @@ Do not merge or push an archived private branch as part of an upstream update.
 
 Run the repository tests and plugin validators before publishing. Source,
 client installation, and live account behavior are separate verification steps.
+
+## CLI adaptation (0.3.1)
+
+PedroAVJ adapted the existing OpenAI-derived Gmail skills, references, and evals
+to Google Workspace CLI operations. Drafting, reply-all, forwarding, search,
+triage, and bounded link-resolution guidance remains attributed to OpenAI. The
+CLI request construction reference and operational mappings are downstream
+additions. The optional curated Gmail 0.1.10 installed bundle has no skills to
+copy; its app registration is no longer shipped or required here.

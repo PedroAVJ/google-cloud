@@ -10,7 +10,7 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const expected = {
   "name": "google-cloud",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "url": "https://github.com/PedroAVJ/google-cloud",
   "dependencies": [
     "toolchain@package-manager"
@@ -75,11 +75,9 @@ test("standalone plugin metadata is synchronized", async () => {
 
 test("merged Gmail and YouTube surfaces are present", async () => {
   const codex = await json(".codex-plugin", "plugin.json");
-  assert.equal(codex.apps, "./.app.json");
+  assert.equal(codex.apps, undefined);
   assert.equal(codex.skills, "./skills/");
-  assert.deepEqual(await json(".app.json"), {
-    apps: { gmail: { id: "connector_2128aebfecb84f64a069897515042a44" } },
-  });
+  await assert.rejects(access(join(root, ".app.json")));
   const skills = (await readdir(join(root, "skills"), { withFileTypes: true }))
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)

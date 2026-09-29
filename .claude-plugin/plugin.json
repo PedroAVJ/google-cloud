@@ -1,7 +1,7 @@
 {
   "name": "google-cloud",
-  "version": "0.3.0",
-  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), OpenAI's connected Gmail workflows, and YouTube playlists through ytx.",
+  "version": "0.3.1",
+  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), Gmail search, triage, and drafting workflows, and YouTube playlists through ytx.",
   "author": {
     "name": "PedroAVJ (Gmail workflows: OpenAI)",
     "url": "https://github.com/PedroAVJ"

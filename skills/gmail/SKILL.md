@@ -1,6 +1,6 @@
 ---
 name: gmail
-description: Manage Gmail inbox triage, mailbox search, thread summaries, action extraction, reply drafting, and email forwarding through connected Gmail data. Use when the user wants to inspect a mailbox or thread, search email with Gmail query syntax, summarize messages, extract decisions and follow-ups, prepare replies or forwarded messages, or organize messages with explicit confirmation before send, archive, delete, or label actions.
+description: Manage Gmail inbox triage, mailbox search, thread summaries, action extraction, reply drafting, and email forwarding through the authenticated Google Workspace CLI (`gws`). Use when the user wants to inspect a mailbox or thread, search email with Gmail query syntax, summarize messages, extract decisions and follow-ups, prepare replies or forwarded messages, or organize messages with explicit confirmation before send, archive, delete, or label actions.
 ---
 
 # Gmail
@@ -38,14 +38,13 @@ When the user supplies a Gmail web URL, do not pass the URL directly to Gmail to
 
 For mailbox analysis requests such as triage, follow-up detection, topic summaries, cleanup, thread understanding, or "what matters here" questions, use this pattern:
 
-1. Strongly prefer Gmail-native `search_emails` first. Use Gmail query syntax for most mailbox tasks because it gives the model precise control over dates, senders, unread state, attachments, subjects, and exclusions, and `search_emails` returns richer summaries than `search_email_ids` without requiring an extra hop.
-2. `search_emails` returns message-level summaries, not thread-grouped results. If several messages look related or a conversation may matter, expand the specific items of interest with `read_email_thread`.
-3. Use `tags` only in the connector's expected shape: `list[str]`. Do not pass a single string. Prefer uppercase Gmail system labels when filtering by built-in labels.
-4. Label search is supported. Use Gmail query syntax for label-aware search, for example `label:foo`, and use `tags` for built-in/system-label filtering when that is cleaner.
-5. Common system labels to use in `tags` include `INBOX`, `STARRED`, `TRASH`, `DRAFT`, `SENT`, `SPAM`, `UNREAD`, and `IMPORTANT`. For All Mail, prefer Gmail query syntax such as `in:anywhere` rather than guessing a tag value.
-6. Use Gmail-native `batch_read_email` when you need the body of multiple shortlisted emails, and escalate to `read_email_thread` only when the surrounding conversation changes the answer.
-7. Use `search_email_ids` only when the next tool specifically needs message IDs and the richer `search_emails` response would not help you decide what to do.
-8. Summarize before writing when the request is ambiguous, and keep analysis separate from actions like send, archive, trash, or label changes unless the user explicitly asked for them.
+1. Use `gws gmail users messages list` with Gmail query syntax and a bounded scope. It returns IDs and thread IDs, not summaries; fetch `messages get` with `format=metadata` for sender, subject, dates, labels, and snippets.
+2. Read [../gmail-cli/SKILL.md](../gmail-cli/SKILL.md) for exact commands, authentication, MIME handling, drafts, sends, and labels. All Gmail operations use `gws` in both clients.
+3. Start with small pages (about 20) and pass `nextPageToken` back as `pageToken` with the same query when more coverage is needed. Never equate an estimated result count with a complete scan.
+4. Use `labelIds` as an array of Gmail label IDs, or `q` with `label:NAME`. Resolve custom label names using `users labels list`. Use `includeSpamTrash` when the scope actually includes those folders.
+5. Fetch `messages get` with `format=full` only for shortlisted bodies. Use `threads get` with the returned `threadId` when surrounding conversation changes the answer; order its messages by `internalDate`.
+6. For broad review without a specified time range, use the previous 24 hours. Exact message/thread requests need no added time window.
+7. Summarize before writing when the request is ambiguous. Keep analysis separate from send, archive, trash, or label actions unless the user explicitly asked for them.
 
 ## Write Safety
 
@@ -60,7 +59,7 @@ For mailbox analysis requests such as triage, follow-up detection, topic summari
 - Summaries should lead with the latest status, then list decisions, open questions, and action items.
 - Inbox triage should use explicit buckets such as urgent, waiting, and FYI when that helps the user scan quickly.
 - When ranking urgency or follow-up state, state the search scope and coverage, such as "from the most recent 15 inbox messages" or "from unread inbox messages matching this query."
-- When the task depends on whether the user "opened" or ignored email, treat that as an inference from Gmail read state unless the connector exposes stronger engagement data.
+- When the task depends on whether the user "opened" or ignored email, treat that as an inference from Gmail read state and do not claim that read state proves human engagement.
 - Avoid absolute claims like "the only urgent email" unless the mailbox scan was comprehensive enough to support that conclusion.
 - When the result comes from a narrowed search or shortlist, report that confidence and mention what was excluded.
 - Draft replies should be concise and ready to paste or send, with greeting, body, and closing when appropriate.
@@ -77,4 +76,4 @@ For mailbox analysis requests such as triage, follow-up detection, topic summari
 
 ## Light Fallback
 
-If thread or inbox data is missing, say that Gmail access may be unavailable or scoped to the wrong account and ask the user to reconnect or clarify which mailbox or thread should be used.
+If thread or inbox data is missing, say that Gmail access may be unavailable or scoped to the wrong account and inspect `gws auth status` and clarify which mailbox or thread should be used.

@@ -1,7 +1,7 @@
 {
   "name": "google-cloud",
-  "version": "0.3.0",
-  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), OpenAI's connected Gmail workflows, and YouTube playlists through ytx.",
+  "version": "0.3.1",
+  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), Gmail search, triage, and drafting workflows, and YouTube playlists through ytx.",
   "author": {
     "name": "PedroAVJ (Gmail workflows: OpenAI)",
     "url": "https://github.com/PedroAVJ"
@@ -27,11 +27,10 @@
     "youtube-data-api"
   ],
   "skills": "./skills/",
-  "apps": "./.app.json",
   "interface": {
     "displayName": "Google Cloud",
     "shortDescription": "gcloud, Workspace (gws), Gmail, and YouTube",
-    "longDescription": "Reach Google through its CLIs rather than curated connectors: discover Google Cloud projects, operate Cloud Storage within its write boundaries, and publish artifacts with gcloud; use OpenAI's connected Gmail app and workflows with raw Gmail access, attachments, bounded attention review, and read-only inbox hygiene through the Google Workspace CLI (gws); and read and edit YouTube playlists, liked videos, and subscriptions through the quota-aware ytx CLI.",
+    "longDescription": "Reach Google through its CLIs rather than curated connectors: discover Google Cloud projects, operate Cloud Storage within its write boundaries, and publish artifacts with gcloud; use Gmail search, thread summaries, drafting, forwarding, labels, attachments, bounded attention review, and inbox hygiene through the Google Workspace CLI (gws); and read and edit YouTube playlists, liked videos, and subscriptions through the quota-aware ytx CLI.",
     "developerName": "PedroAVJ + OpenAI",
     "category": "Developer Tools",
     "capabilities": [

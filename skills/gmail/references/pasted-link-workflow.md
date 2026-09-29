@@ -16,14 +16,14 @@ Do not attempt to extract an ID from search, label, category, settings, compose,
 ## Bounded Resolution
 
 1. Extract the opaque token without changing its case or otherwise transforming it.
-2. Call `read_email_thread` with the token as a message ID, using the tool's default `id_type="message"` behavior.
-3. Only when that exact lookup reports that the ID is invalid or not found, retry once with the same token and `id_type="thread"`.
+2. Call `gws gmail users messages get` with the token as `id` and `format=metadata`. On success, use its returned `threadId` with `users threads get` when thread context is needed.
+3. Only when that exact lookup reports that the ID is invalid or not found, retry once with `gws gmail users threads get` using the same token as `id`.
 4. If either lookup succeeds, use the returned thread as the requested context.
-5. Do not broaden the attempt into `search_emails`, `search_email_ids`, subject guessing, sender guessing, pagination, or repeated retries.
+5. Do not broaden the attempt into a `messages list` query, subject guessing, sender guessing, pagination, or repeated retries.
 
-The `/u/<account-index>/` segment is a browser account slot, not an instruction to select a connector account. Always use the currently connected Gmail account. If the link belongs to a different mailbox, report that mismatch instead of trying another account.
+The `/u/<account-index>/` segment is a browser account slot, not an instruction to select a `gws` account. Always use the currently authenticated `gws` Gmail account. If the link belongs to a different mailbox, report that mismatch instead of trying another account.
 
-Do not perform the thread-ID retry after authentication, authorization, connector availability, rate-limit, or transient provider errors. Report those errors according to their actual cause.
+Do not perform the thread-ID retry after authentication, authorization, CLI availability, rate-limit, or transient provider errors. Report those errors according to their actual cause.
 
 ## Fast-Fail Recovery
 

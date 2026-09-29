@@ -2,17 +2,16 @@
 
 Read this file when the user wants to forward an email or thread, decide what context to attach, or turn a long thread into a useful forward.
 
-## Tool
+## CLI path
 
-- Use the Gmail `forward_emails` action for forwarding.
-- The tool shape is:
-  - `message_ids: list[str]`
-  - `to: str`
-  - `cc: str`
-  - `bcc: str`
-  - `note: str`
-- `forward_emails` is a bulk action over `message_ids`. It sends a separate new forwarded email for each source message, inlines the original content, and preserves the original attachments.
-- The `note` parameter is the full email body that will be attached above the forwarded content. It can be used to add context, a request, or a summary, and it accepts Markdown-style body text.
+Use `gws` to read the exact source messages, then compose a new MIME message for
+each intended forward. Include the source headers and content below the note,
+and preserve the original attachments using the attachment helper. Forwarding
+requires explicit send intent; otherwise show a draft in the conversation.
+There is no special forward endpoint in the Gmail API. Follow the
+[compose reference](../../gmail-cli/references/compose-and-mutations.md).
+Do not silently omit attachments or substitute a summary for a requested full
+forward. If attachment retrieval fails, report it before sending.
 
 ## Core Defaults
 
