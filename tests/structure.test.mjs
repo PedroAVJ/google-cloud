@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, rmSync, symlinkSync } from "node:fs";
+import { access, readFile, readdir, stat } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { extname, join, relative } from "node:path";
 import test from "node:test";
@@ -7,9 +10,11 @@ import test from "node:test";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const expected = {
   "name": "google-cloud",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "url": "https://github.com/PedroAVJ/google-cloud",
-  "dependencies": []
+  "dependencies": [
+    "toolchain@package-manager"
+  ]
 };
 
 async function json(...parts) {
@@ -61,12 +66,79 @@ test("standalone plugin metadata is synchronized", async () => {
   assert.equal(pkg.version, expected.version);
   assert.equal(pkg.homepage, expected.url + "#readme");
   assert.equal(pkg.repository.url, "git+" + expected.url + ".git");
-  assert.equal(pkg.bin, undefined);
+  assert.deepEqual(pkg.bin, { "gmail-attention": "./bin/gmail-attention", ytx: "./bin/ytx" });
   assert.equal(pkg.dependencies, undefined);
+  for (const command of Object.keys(pkg.bin)) {
+    assert.notEqual((await stat(join(root, "bin", command))).mode & 0o111, 0);
+  }
+});
+
+test("merged Gmail and YouTube surfaces are present", async () => {
+  const codex = await json(".codex-plugin", "plugin.json");
+  assert.equal(codex.apps, "./.app.json");
+  assert.equal(codex.skills, "./skills/");
+  assert.deepEqual(await json(".app.json"), {
+    apps: { gmail: { id: "connector_2128aebfecb84f64a069897515042a44" } },
+  });
+  const skills = (await readdir(join(root, "skills"), { withFileTypes: true }))
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+  assert.deepEqual(skills, [
+    "gmail",
+    "gmail-cli",
+    "gmail-inbox-triage",
+    "gmail-review-attention",
+    "gmail-review-inbox-hygiene",
+    "google-cloud",
+    "publish",
+    "storage",
+    "youtube",
+  ]);
+  for (const skill of skills) {
+    const contents = await readFile(join(root, "skills", skill, "SKILL.md"), "utf8");
+    assert.match(contents, new RegExp(`^---\\nname: ${skill}\\n`), `${skill} frontmatter name`);
+    assert.doesNotMatch(contents, /\bgmail:|\byoutube:|youtube-cli|\breferences\/attention-policy/);
+  }
+  await access(join(root, "references", "gmail-attention-policy.md"));
+  await access(join(root, "GMAIL-DOWNSTREAM.md"));
+  await access(join(root, "licenses", "openai-gmail-MIT.txt"));
+  for (const script of ["gmail_attention.py", "gmail_cli.py", "youtube_cli.py"]) {
+    await access(join(root, "scripts", script));
+  }
+});
+
+test("ytx resolves its plugin root when invoked through a stable symlink", () => {
+  const directory = mkdtempSync(join(tmpdir(), "ytx-front-door-"));
+  try {
+    const frontDoor = join(directory, "ytx");
+    symlinkSync(join(root, "bin", "ytx"), frontDoor);
+    execFileSync(frontDoor, ["--help"], { stdio: "ignore" });
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("Gmail hygiene retains a bounded stateless source window", async () => {
+  const skill = await readFile(join(root, "skills", "gmail-review-inbox-hygiene", "SKILL.md"), "utf8");
+  assert.match(skill, /native scheduler is only its clock/i);
+  assert.match(skill, /previous 24 hours/i);
+  assert.match(skill, /stateless/i);
+  assert.match(skill, /Never unsubscribe, block, report, send/);
+});
+
+test("Gmail hygiene remains client-neutral and source-read-only", async () => {
+  for (const contents of await Promise.all([
+    readFile(join(root, "skills", "gmail-review-inbox-hygiene", "SKILL.md"), "utf8"),
+    readFile(join(root, "references", "gmail-attention-policy.md"), "utf8"),
+  ])) {
+    assert.doesNotMatch(contents, /\bIntake\b|Codex-only|shared sweep|event CLI|event envelope/i);
+    assert.match(contents, /never/i);
+  }
 });
 
 test("publishing is skill-only and uses native gcloud storage", async () => {
-  await assert.rejects(access(join(root, "bin")));
+  await assert.rejects(access(join(root, "bin", "publish")));
 
   const publish = await readFile(join(root, "skills", "publish", "SKILL.md"), "utf8");
   assert.match(publish, /gcloud auth list/);

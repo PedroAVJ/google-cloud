@@ -1,0 +1,7 @@
+interface:
+  display_name: "Gmail (CLI)"
+  short_description: "Use Gmail through gws"
+  icon_small: "./assets/gmail-app-icon.png"
+  icon_large: "./assets/gmail-app-icon.png"
+  brand_color: "#EA4335"
+  default_prompt: "Use $gmail-cli to search Gmail, inspect raw messages, and download attachments through the authenticated gws CLI."

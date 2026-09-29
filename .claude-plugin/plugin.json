@@ -1,9 +1,9 @@
 {
   "name": "google-cloud",
-  "version": "0.2.11",
-  "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
+  "version": "0.3.0",
+  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), OpenAI's connected Gmail workflows, and YouTube playlists through ytx.",
   "author": {
-    "name": "PedroAVJ",
+    "name": "PedroAVJ (Gmail workflows: OpenAI)",
     "url": "https://github.com/PedroAVJ"
   },
   "homepage": "https://github.com/PedroAVJ/google-cloud",
@@ -15,7 +15,19 @@
     "gcloud",
     "cloud-storage",
     "gcs",
-    "publishing"
+    "publishing",
+    "google-workspace",
+    "gws",
+    "gmail",
+    "email",
+    "triage",
+    "youtube",
+    "playlists",
+    "ytx",
+    "youtube-data-api"
   ],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "dependencies": [
+    "toolchain@package-manager"
+  ]
 }

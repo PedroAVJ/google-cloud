@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Gmail Attention"
+  short_description: "Process only consequential new Gmail"
+  default_prompt: "Use $gmail-review-attention to process the exact new inbound Gmail delta."

@@ -1,9 +1,9 @@
 {
   "name": "google-cloud",
-  "version": "0.2.11",
-  "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
+  "version": "0.3.0",
+  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), OpenAI's connected Gmail workflows, and YouTube playlists through ytx.",
   "author": {
-    "name": "PedroAVJ",
+    "name": "PedroAVJ (Gmail workflows: OpenAI)",
     "url": "https://github.com/PedroAVJ"
   },
   "homepage": "https://github.com/PedroAVJ/google-cloud",
@@ -15,14 +15,24 @@
     "gcloud",
     "cloud-storage",
     "gcs",
-    "publishing"
+    "publishing",
+    "google-workspace",
+    "gws",
+    "gmail",
+    "email",
+    "triage",
+    "youtube",
+    "playlists",
+    "ytx",
+    "youtube-data-api"
   ],
   "skills": "./skills/",
+  "apps": "./.app.json",
   "interface": {
     "displayName": "Google Cloud",
-    "shortDescription": "gcloud, Cloud Storage, and artifact publishing",
-    "longDescription": "Reach Google Cloud through the gcloud CLI rather than a curated connector: discover projects, operate Cloud Storage within its write boundaries, and publish artifacts with native gcloud commands.",
-    "developerName": "PedroAVJ",
+    "shortDescription": "gcloud, Workspace (gws), Gmail, and YouTube",
+    "longDescription": "Reach Google through its CLIs rather than curated connectors: discover Google Cloud projects, operate Cloud Storage within its write boundaries, and publish artifacts with gcloud; use OpenAI's connected Gmail app and workflows with raw Gmail access, attachments, bounded attention review, and read-only inbox hygiene through the Google Workspace CLI (gws); and read and edit YouTube playlists, liked videos, and subscriptions through the quota-aware ytx CLI.",
+    "developerName": "PedroAVJ + OpenAI",
     "category": "Developer Tools",
     "capabilities": [
       "Interactive",
@@ -35,8 +45,9 @@
     "screenshots": [],
     "defaultPrompt": [
       "Publish this screenshot and give me the URL",
-      "Which bucket does this artifact belong in?",
-      "What Google Cloud projects do I have?"
+      "What Google Cloud projects do I have?",
+      "Triage my Gmail inbox into actionable buckets",
+      "List my YouTube playlists with ytx"
     ]
   }
 }

@@ -1,7 +1,13 @@
 # Google Cloud
 
-Google Cloud through the `gcloud` CLI, plus the storage substrate this
-machine actually uses.
+Google through its command-line interfaces: Google Cloud through `gcloud`,
+Google Workspace (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People) through
+the Google Workspace CLI `gws`, OpenAI's connected Gmail workflows, and YouTube
+through the plugin-owned `ytx` CLI.
+
+This plugin absorbed the former `gmail` and `youtube` plugins. Their skills,
+CLIs, scripts, and references now live here; credential, token, and cache
+identities are unchanged.
 
 ## Why The CLI, Not An MCP Server
 
@@ -24,6 +30,45 @@ callable, so it wins.
 | `google-cloud` | Any GCP task: which project a thing lives in, auth, scoping commands, provisioning, and the safety boundary around production resources. |
 | `storage` | Which bucket holds what, the repo-scoped prefix convention, and how to identify read-only backup and application buckets. |
 | `publish` | Turning a local file into a durable URL with native `gcloud storage` commands, including deciding whether it belongs in Cloud Storage or Google Drive at all. |
+| `gmail` | OpenAI's connected Gmail workflow: search, thread summaries, drafting, forwarding, labels, self-delivery, pasted links. |
+| `gmail-inbox-triage` | OpenAI's inbox triage into urgent, needs reply soon, waiting, and FYI. |
+| `gmail-cli` | Raw Gmail API metadata, MIME source, and attachments through `gws` when the connector is not raw enough. |
+| `gmail-review-attention` | Stateless, received-time-bounded review of consequential inbound Gmail. |
+| `gmail-review-inbox-hygiene` | Read-only unwanted-message review with manual unsubscribe, block, or report suggestions. |
+| `youtube` | Playlists, liked videos, subscriptions, and quota through `ytx` over the YouTube Data API v3. |
+
+## Gmail
+
+ChatGPT and Codex use `.app.json` for OpenAI's canonical Gmail connector.
+Claude Code does not consume ChatGPT app registrations, so it uses the `gws`
+path. The raw fallback requires `gws` to be installed and authenticated with
+the Gmail API enabled for its OAuth project.
+
+```bash
+gws auth status
+gmail-attention scan                 # previous 24 hours of received mail
+gmail-attention scan --since 48h
+```
+
+The scanner is stateless and never mutates Gmail. See
+[`GMAIL-DOWNSTREAM.md`](GMAIL-DOWNSTREAM.md) for OpenAI upstream provenance
+and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for licensing.
+
+## YouTube
+
+`ytx` is a single stdlib-only Python file at
+[`scripts/youtube_cli.py`](./scripts/youtube_cli.py). It reuses the Desktop
+OAuth client configured for `gws` (`~/.config/gws/client_secret.json`) but
+keeps its own token in the macOS Keychain (`ytx-oauth`) and its SQLite mirror
+at `~/.config/ytx/cache.db`. Quota is 10,000 units/day; `ytx quota` reports
+today's spend. See
+[`limitations.md`](./skills/youtube/references/limitations.md).
+
+```bash
+ytx auth status
+ytx playlists list
+ytx sync && ytx playlists list --cached
+```
 
 ## The Substrate
 
@@ -54,4 +99,11 @@ claude plugin install google-cloud@package-manager
 
 ```bash
 codex plugin add google-cloud@package-manager
+mkdir -p ~/.local/bin
+ln -sfn ~/.codex/plugins/cache/package-manager/google-cloud/<version>/bin/ytx ~/.local/bin/ytx
+ln -sfn ~/.codex/plugins/cache/package-manager/google-cloud/<version>/bin/gmail-attention ~/.local/bin/gmail-attention
 ```
+
+The plugin-owned wrappers are stable front doors into the released plugin
+cache. Repoint the versioned symlinks only after the replacement release is
+installed and verified.

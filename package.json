@@ -1,12 +1,16 @@
 {
   "name": "@pedroavj/google-cloud",
-  "version": "0.2.11",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "Work with Google Cloud through the gcloud CLI: project inventory, Cloud Storage, and durable artifact publishing.",
+  "description": "Google through its CLIs: gcloud (projects, Cloud Storage, artifact publishing), the Google Workspace CLI gws (Gmail, Drive, Docs, Sheets, Calendar, Tasks, People), OpenAI's connected Gmail workflows, and YouTube playlists through ytx.",
+  "bin": {
+    "gmail-attention": "./bin/gmail-attention",
+    "ytx": "./bin/ytx"
+  },
   "scripts": {
-    "check": "node --test tests/*.test.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "check": "npm test",
+    "test": "node --test tests/*.test.mjs && PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'"
   },
   "license": "MIT",
   "repository": {
