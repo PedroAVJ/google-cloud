@@ -96,14 +96,14 @@ npm test
 ## Install
 
 ```bash
-claude plugin install google-cloud@package-manager
+claude plugin install google-cloud@near
 ```
 
 ```bash
-codex plugin add google-cloud@package-manager
+codex plugin add google-cloud@near
 mkdir -p ~/.local/bin
-ln -sfn ~/.codex/plugins/cache/package-manager/google-cloud/<version>/bin/ytx ~/.local/bin/ytx
-ln -sfn ~/.codex/plugins/cache/package-manager/google-cloud/<version>/bin/gmail-attention ~/.local/bin/gmail-attention
+ln -sfn ~/.codex/plugins/cache/near/google-cloud/<version>/bin/ytx ~/.local/bin/ytx
+ln -sfn ~/.codex/plugins/cache/near/google-cloud/<version>/bin/gmail-attention ~/.local/bin/gmail-attention
 ```
 
 The plugin-owned wrappers are stable front doors into the released plugin
